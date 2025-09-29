@@ -69,6 +69,26 @@ const GetShowTimeById = async (req, res) => {
   }
 };
 
+const GetShowTimeByMovie = async (req, res) => {
+  try {
+    const { movieId } = req.params;
+    const showTime = await ShowTime.find({ movie: movieId }).populate("movie");
+    if (!showTime)
+      return res.status(404).json({
+        message: "Showtime Not Found For This Movie",
+      });
+
+    res.status(201).json({
+      message: "Showtime Fetched Successfully",
+      showTime,
+    });
+  } catch (error) {
+    res.status(500).json({
+      message: error.message,
+    });
+  }
+};
+
 const UpdateShowTime = async (req, res) => {
   try {
     const showTime = await ShowTime.findByIdAndUpdate(req.params.id, req.body, {
@@ -112,6 +132,7 @@ module.exports = {
   AddShowTime,
   GetShowTime,
   GetShowTimeById,
+  GetShowTimeByMovie,
   UpdateShowTime,
   DeleteShowTime,
 };

@@ -17,7 +17,7 @@ const Register = async (req, res) => {
     const newUser = new User({ name, email, password: hashedPassword });
     await newUser.save();
 
-    res.json({ message: "User Registered Successfully" });
+    res.status(201).json({ message: "User Registered Successfully" });
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
@@ -37,7 +37,8 @@ const Login = async (req, res) => {
       expiresIn: "1d",
     });
 
-    res.json({
+    res.status(201).json({
+      message: "Login Successfull",
       token,
       user: { id: user._id, name: user.name, email: user.email },
     });

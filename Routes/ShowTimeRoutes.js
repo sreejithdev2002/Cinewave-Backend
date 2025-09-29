@@ -2,6 +2,7 @@ const express = require("express");
 const {
   GetShowTime,
   GetShowTimeById,
+  GetShowTimeByMovie,
   AddShowTime,
   UpdateShowTime,
 } = require("../Controllers/ShowTimeController");
@@ -12,6 +13,7 @@ const router = express.Router();
 // GET
 router.get("/", GetShowTime);
 router.get("/:id", GetShowTimeById);
+router.get("/movie/:movieId", GetShowTimeByMovie);
 
 // POST
 router.post("/", AddShowTime);

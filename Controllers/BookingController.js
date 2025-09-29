@@ -91,16 +91,22 @@ const GetBookingsById = async (req, res) => {
 
 const GetUserBookings = async (req, res) => {
   try {
-    const bookings = await Booking.find({ user: req.params.userId }).populate(
-      "showtime",
-      "movie theater date time"
-    );
-    if (!bookings)
+    const bookings = await Booking.find({ user: req.params.userId }).populate({
+      path: "showtime",
+      select: "movie theater date time",
+      populate: {
+        path: "movie",
+        select: "title", // 👈 Only fetch the title from Movie model
+      },
+    });
+
+    if (!bookings || bookings.length === 0) {
       return res.status(404).json({
         message: "Booking Not Found",
       });
+    }
 
-    res.status(201).json({
+    res.status(200).json({
       message: "Booking Fetched Successfully",
       bookings,
     });
